@@ -41,6 +41,10 @@ server.on('request', (req, res) => {
 
     stream.pipe(res);
 
+    req.on('aborted', () => {
+      stream.destroy();
+    });
+
     res.on('close', () => {
       stream.destroy();
     });
