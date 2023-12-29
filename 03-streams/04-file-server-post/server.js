@@ -59,6 +59,7 @@ server.on('request', (req, res) => {
       res.end(`Finish. File ${pathname} uploaded`);
     });
 
+    // todo: заменить на close + условие !req.complete или readableEnded у рид. стрима
     req.on('aborted', () => {
       limitStream.destroy();
       stream.destroy();
