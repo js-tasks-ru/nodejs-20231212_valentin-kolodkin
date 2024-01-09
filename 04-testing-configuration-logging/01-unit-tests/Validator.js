@@ -17,6 +17,11 @@ module.exports = class Validator {
         return errors;
       }
 
+      if (rules.min > rules.max) {
+        errors.push({field, error: `rules.min ${rules.min} more than rules.max ${rules.max}`});
+        continue;
+      }
+
       switch (type) {
         case 'string':
           if (value.length < rules.min) {
@@ -31,7 +36,7 @@ module.exports = class Validator {
             errors.push({field, error: `too little, expect ${rules.min}, got ${value}`});
           }
           if (value > rules.max) {
-            errors.push({field, error: `too big, expect ${rules.min}, got ${value}`});
+            errors.push({field, error: `too big, expect ${rules.max}, got ${value}`});
           }
           break;
       }
