@@ -7,26 +7,18 @@ module.exports.productsBySubcategory = async function productsBySubcategory(ctx,
 
   if (!subcategory) return next();
 
-  const mappedProducts = [];
   const products = await Product.find({subcategory: subcategory});
-  products.forEach(function(row) {
-    mappedProducts.push(productMapper(row));
-  });
 
   ctx.body = {
-    products: mappedProducts,
+    products: products.map(productMapper),
   };
 };
 
 module.exports.productList = async function productList(ctx, next) {
-  const mappedProducts = [];
   const products = await Product.find({});
-  products.forEach(function(row) {
-    mappedProducts.push(productMapper(row));
-  });
 
   ctx.body = {
-    products: mappedProducts,
+    products: products.map(productMapper),
   };
 };
 
@@ -44,4 +36,3 @@ module.exports.productById = async function productById(ctx, next) {
     product: productMapper(product),
   };
 };
-
