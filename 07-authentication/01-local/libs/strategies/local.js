@@ -10,7 +10,7 @@ module.exports = new LocalStrategy(
         return done(null, false, 'Нет такого пользователя');
       }
 
-      if (!user.checkPassword(password)) {
+      if (! (await user.checkPassword(password))) {
         return done(null, false, 'Неверный пароль');
       }
 
