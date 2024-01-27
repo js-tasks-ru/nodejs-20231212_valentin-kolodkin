@@ -5,6 +5,7 @@ const Session = require('./models/Session');
 const {v4: uuid} = require('uuid');
 const handleMongooseValidationError = require('./libs/validationErrors');
 const mustBeAuthenticated = require('./libs/mustBeAuthenticated');
+const findUserByAuthHeader = require('./libs/findUserByAuthHeader');
 const {login} = require('./controllers/login');
 const {oauth, oauthCallback} = require('./controllers/oauth');
 const {me} = require('./controllers/me');
@@ -72,7 +73,7 @@ router.post('/login', login);
 router.get('/oauth/:provider', oauth);
 router.post('/oauth_callback', handleMongooseValidationError, oauthCallback);
 
-router.get('/me', mustBeAuthenticated, me);
+router.get('/me', findUserByAuthHeader, mustBeAuthenticated, me);
 
 app.use(router.routes());
 
