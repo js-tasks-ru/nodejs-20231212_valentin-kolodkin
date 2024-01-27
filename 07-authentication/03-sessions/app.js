@@ -33,6 +33,12 @@ app.use((ctx, next) => {
   ctx.login = async function(user) {
     const token = uuid();
 
+    await Session.create({
+      token: token,
+      lastVisit: new Date(),
+      user: user._id,
+    });
+
     return token;
   };
 
@@ -43,7 +49,20 @@ const router = new Router({prefix: '/api'});
 
 router.use(async (ctx, next) => {
   const header = ctx.request.get('Authorization');
-  if (!header) return next();
+  if (!header) {
+    return next();
+  }
+
+  const explodedHeader = header.split(' ');
+  if (explodedHeader.length < 2) {
+    return next();
+  }
+
+  await Session.findOneAndUpdate({
+    token: explodedHeader[1],
+  }, {
+    lastVisit: new Date(),
+  });
 
   return next();
 });
@@ -53,7 +72,7 @@ router.post('/login', login);
 router.get('/oauth/:provider', oauth);
 router.post('/oauth_callback', handleMongooseValidationError, oauthCallback);
 
-router.get('/me', me);
+router.get('/me', mustBeAuthenticated, me);
 
 app.use(router.routes());
 
