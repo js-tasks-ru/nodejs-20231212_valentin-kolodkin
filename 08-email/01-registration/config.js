@@ -36,7 +36,7 @@ module.exports = {
     },
   },
   mailer: {
-    user: '',
-    password: '',
+    user: process.env.MAILER_USER,
+    password: process.env.MAILER_PASSWORD,
   },
 };
