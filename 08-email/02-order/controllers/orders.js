@@ -47,6 +47,7 @@ module.exports.checkout = async function checkout(ctx, next) {
   ctx.response.status = 201;
   ctx.response.body = {
     status: 'ok',
+    order: order._id,
   };
 };
 
