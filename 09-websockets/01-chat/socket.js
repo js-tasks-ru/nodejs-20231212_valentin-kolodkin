@@ -28,14 +28,12 @@ function socket(server) {
     socket.on('message', async (msg) => {
       const user = socket.user;
 
-      const messageObj = new Message({
+      await Message.create({
         date: new Date(),
         text: msg,
         chat: user._id,
         user: user.displayName,
       });
-
-      await messageObj.save();
     });
   });
 
