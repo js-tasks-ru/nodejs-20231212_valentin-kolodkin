@@ -13,7 +13,7 @@ function socket(server) {
       next(err);
     }
 
-    const session = await Session.findOne({token});
+    const session = await Session.findOne({token}).populate('user');
     if (!session) {
       const err = new Error('wrong or expired session token');
       next(err);
